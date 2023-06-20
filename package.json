@@ -1,0 +1,24 @@
+{
+  "name": "websockets",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "start": "sls offline start",
+    "deploy": "serverless deploy"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless-dotenv-plugin": "^6.0.0",
+    "serverless-dynamodb-local": "^0.2.24",
+    "serverless-offline": "^12.0.4",
+    "serverless-offline-lambda": "^1.0.6"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.354.0",
+    "@aws-sdk/lib-dynamodb": "^3.354.0",
+    "amazon-cognito-identity-js": "^6.2.0"
+  }
+}

@@ -1,0 +1,60 @@
+service: my-websocket-service
+
+provider:
+    name: aws
+    runtime: nodejs16.x
+    region: us-east-1
+    iamRoleStatements:
+        - Effect: Allow
+          Action:
+              - cognito-idp:AdminInitiateAuth
+              - cognito-idp:AdminCreateUser
+              - cognito-idp:AdminSetUserPassword
+          Resource: '*'
+        - Effect: Allow
+          Action:
+              - dynamodb:Query
+              - dynamodb:Scan
+              - dynamodb:GetItem
+              - dynamodb:PutItem
+              - dynamodb:UpdateItem
+              - dynamodb:DeleteItem
+          Resource: '*'
+
+functions:
+    loginUser:
+        handler: user/login.handler
+        events:
+            - http:
+                  path: user/login
+                  method: post
+
+    signupUser:
+        handler: user/signup.handler
+        events:
+            - http:
+                  path: user/signup
+                  method: post
+
+    websocket:
+        handler: handler.handler
+        events:
+            - websocket:
+                  route: $connect
+            - websocket:
+                  route: $disconnect
+            - websocket:
+                  route: $default
+resources:
+    Resources:
+        WebsocketApi:
+            Type: AWS::ApiGatewayV2::Api
+            Properties:
+                Name: my-websocket-api
+
+        WebsocketIntegration:
+            Type: AWS::ApiGatewayV2::Integra
+plugins:
+    - serverless-offline
+    - serverless-offline-lambda
+    - serverless-dotenv-plugin
